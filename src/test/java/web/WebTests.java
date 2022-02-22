@@ -1,19 +1,21 @@
+package web;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.qameta.allure.Step;
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import pages.CheckoutPage;
-import pages.FoodTrackerPage;
-import pages.RestaurantMenuPage;
-import pages.RestaurantPage;
+import web.pages.CheckoutPage;
+import web.pages.FoodTrackerPage;
+import web.pages.RestaurantMenuPage;
+import web.pages.RestaurantPage;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Base tests for JET webpage")
-public class BaseTest {
+@DisplayName("Base tests for JET page")
+public class WebTests {
     private ThreadLocal<WebDriver> driver = new ThreadLocal<>();
     private RestaurantPage restaurantPage;
     private RestaurantMenuPage restaurantMenuPage;
@@ -48,13 +50,15 @@ public class BaseTest {
     }
 
     @Test
-    @DisplayName("user is able to open all restaurants page")
+    @DisplayName("Open restaurants page")
+    @Description("Verify page with restaurants can be opened ")
     public void testRestListOpen() {
         Assertions.assertTrue(restaurantPage.waitIsPageUrlContain(BASE_URI));
     }
 
     @Test
-    @DisplayName("user is able to search BRT restaurant and open it's page")
+    @DisplayName("Search BRT Cypress restaurant and open page")
+    @Description("User is able to search BRT restaurant and open it's page")
     public void testOpenBRTRestaurantPage() {
         restaurantPage.searchForRestaurant(testRestaurant);
         restaurantMenuPage = restaurantPage.openRestaurantPage(restaurantUrl);
@@ -64,17 +68,17 @@ public class BaseTest {
     }
 
     @Test
-    @Tag("BURGER CATEGORY")
-    @DisplayName("user is able to add items from burgers category to basket")
+    @DisplayName("Add burgers to basket")
+    @Description("User is able to add items from burgers category to basket")
     public void testAddBurgersToBasket() {
         checkoutPage = openBRTRestaurantPageAndAddBurgersToBasket();
-
         // Verify that basket has items
         assertThat(checkoutPage.countItemsInBasket()).isGreaterThan(0);
     }
 
     @Test
-    @DisplayName("order cannot be confirmed if user is not in the same city")
+    @DisplayName("Cannot create an order for delivery")
+    @Description("Order cannot be confirmed if user is not in the same city")
     public void testUnableCreateBurgerOrder() {
         String errorBannerMessage = testRestaurant + " does not deliver in the delivery area";
         checkoutPage = openBRTRestaurantPageAndAddBurgersToBasket();
@@ -91,7 +95,8 @@ public class BaseTest {
     }
 
     @Test
-    @DisplayName("user is able to create order with correct delivery address")
+    @DisplayName("Successfully create order for delivery")
+    @Description("User is able to create order with correct delivery address")
     public void testSuccessfullyCreateBurgerOrder() {
         checkoutPage = openBRTRestaurantPageAndAddBurgersToBasket();
 
@@ -102,8 +107,8 @@ public class BaseTest {
 
         // verify tracker page opened and order is created successfully
         Assertions.assertTrue(trackerPage.waitIsPageUrlContain("foodtracker?trackingid="));
-        assertThat(trackerPage.getOrderReceivedTitle()).isEqualTo("Thank you, we received your order!");
-        assertThat(trackerPage.getOrderTitle()).isEqualTo("We’ve got your order");
+        assertThat(trackerPage.getOrderReceivedTitle("Thank you, we received your order!")).isTrue();
+        assertThat(trackerPage.getOrderTitle("We’ve got your order")).isTrue();
         assertThat(trackerPage.getOrderReferenceId().length()).isEqualTo(6);
     }
 

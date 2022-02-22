@@ -1,7 +1,6 @@
-package pages;
+package web.pages;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -41,17 +40,14 @@ public class RestaurantMenuPage extends BasePage {
         categoryTab.click();
     }
 
-    @Step("Add items from category 'Burger'")
+    @Step("Add items from category 'Burger' and checkout")
     public CheckoutPage addItemsFromBurgerCategoryToBasketAndCheckout() {
         waitUntilAllElementsAppear(itemCategoryBurgerList);
         itemCategoryBurgerList.forEach(webElement -> {
             waitElementToBeClickable(webElement).click();
             waitElementToBeClickable(addItemToBasketButton).click();
         });
-            try {
-                waitElementToBeClickable(checkoutButton).click();
-            } catch (NoSuchElementException ignored) {
-            }
+        waitIsPageUrlContain("#checkout");
         return new CheckoutPage(driver);
     }
 

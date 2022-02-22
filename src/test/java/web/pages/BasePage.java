@@ -1,4 +1,4 @@
-package pages;
+package web.pages;
 
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
@@ -19,7 +19,7 @@ public class BasePage {
     public BasePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
-        wait = (WebDriverWait) new WebDriverWait(driver, Duration.ofSeconds(10)).pollingEvery(Duration.ofSeconds(2));
+        wait = (WebDriverWait) new WebDriverWait(driver, Duration.ofSeconds(12)).pollingEvery(Duration.ofSeconds(2));
     }
 
     /**

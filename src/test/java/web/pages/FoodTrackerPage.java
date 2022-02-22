@@ -1,4 +1,4 @@
-package pages;
+package web.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,12 +19,14 @@ public class FoodTrackerPage extends BasePage {
         super(driver);
     }
 
-    public String getOrderTitle() {
-        return waitElementToAppear(orderCreatedTitle).getText();
+    public Boolean getOrderTitle(String text ) {
+        return waitTextOnElementToAppear(orderCreatedTitle, text);
+//        return waitElementToAppear(orderCreatedTitle).getText();
     }
 
-    public String getOrderReceivedTitle() {
-        return waitElementToAppear(orderReceivedTitle).getText();
+    public Boolean getOrderReceivedTitle(String text) {
+        return waitTextOnElementToAppear(orderReceivedTitle, text);
+//        return waitElementToAppear(orderReceivedTitle).getText();
     }
 
     public String getOrderReferenceId() {
